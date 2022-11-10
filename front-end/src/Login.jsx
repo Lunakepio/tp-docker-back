@@ -1,5 +1,7 @@
 import * as React from "react";
 import "./assets/style/settings.scss";
+import axios from "axios";
+const [buttonText, setButtonText] = React.useState("Register");
 
 function Login() {
   const [email, setEmail] = React.useState("");

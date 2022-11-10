@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const hostname = "0.0.0.0";
 const port = 3000;
@@ -7,6 +8,7 @@ const port = 3000;
 const server = express();
 mongoose.connect("mongodb://localhost:27017/apinode");
 
+server.use(cors());
 server.use(express.urlencoded());
 server.use(express.json());
 

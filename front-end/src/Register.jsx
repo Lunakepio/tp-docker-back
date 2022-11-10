@@ -1,11 +1,38 @@
 import * as React from "react";
 import "./assets/style/settings.scss";
+import axios from "axios";
 
 function Register() {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  
+  const [buttonText, setButtonText] = React.useState("Register");
+
+  const registerMongo = (e) => {
+    e.preventDefault();
+    setName("");
+    setEmail("");
+    setPassword("")
+    setButtonText("Registering...");
+    axios
+      .post("http://localhost:3000/users", {
+        name: name,
+        email: email,
+        password: password
+      })
+      .then(res => {
+        console.log(res.status);
+          res.status === 201 ? setButtonText("Registered successfully !") : setButtonText("Failed registery...");
+        
+      });
+  }
+
+  const handleKey = (e) => {
+    if (e.key === "Enter") {
+      registerMongo();
+    }
+  }
+
 
   return (
   <div className="login">
@@ -52,7 +79,7 @@ function Register() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button className="login__button">Login</button>
+          <button className={buttonText === "Register" ? "login__button" : buttonText === "Registered successfully !" ? "login__button green" : buttonText === "Failed registery..." ? "login__button red" : buttonText === "Registering..." ? "login__button" : ""} onClick={(e) => registerMongo(e)} onKeyDown={(e) => handleKey(e)}> {buttonText} </button>
 
           <div className="login__links">
             <p className="login__link">Already have an account? Login here</p>

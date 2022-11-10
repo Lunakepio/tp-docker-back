@@ -9,6 +9,23 @@ exports.listAllUsers = (req, res) => {
   });
 }
 
+exports.logAUser = (req, res) => {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    if (user) {
+      if (user.password === req.body.password) {
+        res.status(200).json(user);
+      } else {
+        res.status(401).send("Wrong password");
+      }
+    } else {
+      res.status(404).send("User not found");
+    }
+  });
+}
+
 exports.createAUser = (req, res) => {
   let newUser = new User(req.body);
 
