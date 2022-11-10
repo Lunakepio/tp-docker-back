@@ -2,16 +2,17 @@ import * as React from "react";
 import "./assets/style/settings.scss";
 import axios from "axios";
 import { Context } from "./App";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const values = React.useContext(Context);
   const [text, setText] = React.useState("");
   const [post, setPost] = React.useState([]);
-
-  if(values.isLogin === false) {
+  const navigate = useNavigate();
+  if (values.isLogin === false) {
     window.location.href = "/";
   }
-  
+
   const createABlog = (e) => {
     setText("");
 
@@ -73,7 +74,7 @@ function Home() {
     const [blogText, setBlogText] = React.useState(props.item.content);
     const [isEdit, setIsEdit] = React.useState(false);
     return (
-      <div className="blog" key={props.item._id}>
+      <div className="blog">
         <div className="left">
           <p>
             <span>{props.item.userName}</span>
@@ -99,6 +100,14 @@ function Home() {
           ) : (
             ""
           )}
+          &nbsp;
+          <span
+            className="comment"
+            onClick={() => navigate(`/post/${props.item._id}`)}
+            key={props.item._id}
+          >
+            💬
+          </span>
           &nbsp;
           <span className="edit" onClick={(e) => setIsEdit(true)}>
             📝
