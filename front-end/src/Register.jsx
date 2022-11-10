@@ -2,6 +2,11 @@ import * as React from "react";
 import "./assets/style/settings.scss";
 
 function Register() {
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  
+
   return (
   <div className="login">
     <div className="login__container">
@@ -17,6 +22,8 @@ function Register() {
             name="name"
             id="name"
             placeholder="Ex: Steve Jobs"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
 
           <label className="login__label" htmlFor="email">
@@ -28,6 +35,8 @@ function Register() {
             name="email"
             id="email"
             placeholder="Ex: Steve@apple.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
           <label className="login__label" htmlFor="password">
@@ -39,14 +48,15 @@ function Register() {
             name="password"
             id="password"
             placeholder="Ex: 123456 (don't use this)"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <button className="login__button">Login</button>
 
           <div className="login__links">
-            <p className="login__link">Forgot password?</p>
+            <p className="login__link">Already have an account? Login here</p>
 
-            <p className="login__link">Create an account</p>
           </div>
         </div>
       </form>

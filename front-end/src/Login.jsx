@@ -2,6 +2,9 @@ import * as React from "react";
 import "./assets/style/settings.scss";
 
 function Login() {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
   return (
   <div className="login">
     <div className="login__container">
@@ -17,6 +20,8 @@ function Login() {
             name="email"
             id="email"
             placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
           <label className="login__label" htmlFor="password">
@@ -28,12 +33,14 @@ function Login() {
             name="password"
             id="password"
             placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <button className="login__button">Login</button>
 
           <div className="login__links">
-            <p className="login__link">Forgot password?</p>
+            <p className="login__link">Already have an account?</p>
 
             <p className="login__link">Create an account</p>
           </div>
