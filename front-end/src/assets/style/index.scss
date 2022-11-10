@@ -8,14 +8,15 @@
 body{
   height: 100vh;
   width: 100vw;
-  background-image: url(../img/floss.png);
-  background-size: 200% 200%;
+  background-image: url(../img/ventura.jpg);
+  background-size: 100% 100%;
   background-repeat: no-repeat;
-  animation: bg-animation 10s ease infinite;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@keyframes bg-animation{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
+a{
+  all:unset;
+  text-decoration: underline;
 }

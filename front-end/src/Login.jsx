@@ -1,8 +1,13 @@
 import * as React from "react";
 import "./assets/style/settings.scss";
 import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
+import { Context } from "./App";
+
 
 function Login() {
+  const values = React.useContext(Context);
+  const navigate = useNavigate();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [buttonText, setButtonText] = React.useState("Login");
@@ -18,16 +23,24 @@ function Login() {
       .then((res) => {
         console.log("test");
         console.log(res);
-        if (res.status === 200) {
           setButtonText("Logged in successfully !");
           setEmail("");
           setPassword("");
-        }
+          values.setUserName(res.data.name);
+          values.setUserEmail(res.data.email);
+          values.setUserId(res.data._id);
+          values.setIsLogin(true);
+          navigate("/home");
+          console.log("test2");
+          console.log(values);
       })
       .catch((err) => {
-        setPassword("");
+        console.log(err);
         setButtonText("Login failed...");
-      });
+      }
+      );
+
+     
   };
 
   return (
@@ -72,7 +85,10 @@ function Login() {
                   ? "login__button red"
                   : buttonText === "Loging in..."
                   ? "login__button"
+                  : buttonText === "User not found..."
+                  ? "login__button red"
                   : ""
+                  
               }
               onClick={(e) => loginMongo(e)}
               onKeyDown={(e) => handleKey(e)}
@@ -82,9 +98,9 @@ function Login() {
             </button>
 
             <div className="login__links">
-              <p className="login__link">Already have an account?</p>
+              <p className="login__link">Forgot password?</p>
 
-              <p className="login__link">Create an account</p>
+              <p className="login__link"><Link to='/register'>Create an account</Link></p>
             </div>
           </div>
         </form>

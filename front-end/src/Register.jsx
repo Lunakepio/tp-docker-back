@@ -1,12 +1,15 @@
 import * as React from "react";
 import "./assets/style/settings.scss";
 import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
 
 function Register() {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [buttonText, setButtonText] = React.useState("Register");
+
+  const navigate = useNavigate();
 
   const registerMongo = (e) => {
     e.preventDefault();
@@ -23,6 +26,9 @@ function Register() {
       .then(res => {
         console.log(res.status);
           res.status === 201 ? setButtonText("Registered successfully !") : setButtonText("Failed registery...");
+          setTimeout(() => {
+            navigate("/");
+          }, 2000);
         
       });
   }
@@ -82,7 +88,7 @@ function Register() {
           <button className={buttonText === "Register" ? "login__button" : buttonText === "Registered successfully !" ? "login__button green" : buttonText === "Failed registery..." ? "login__button red" : buttonText === "Registering..." ? "login__button" : ""} onClick={(e) => registerMongo(e)} onKeyDown={(e) => handleKey(e)}> {buttonText} </button>
 
           <div className="login__links">
-            <p className="login__link">Already have an account? Login here</p>
+            <p className="login__link">Already have an account? <Link to="/">Login here !</Link></p>
 
           </div>
         </div>
