@@ -31,7 +31,7 @@ Blog.js uses quite some technologies to work
 - [Express.js] The standard framework to create Node.js server
 - [Mongoose] A MongoDB library that allows communication between node.js and MongoDB Database
 - [Node.js] The open source development platform for executing JavaScript code server-side.
-- 
+
 ## Installation
 
 Blog.js requires [Node.js](https://nodejs.org/) v18+ to run.
