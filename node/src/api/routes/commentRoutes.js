@@ -2,7 +2,7 @@ module.exports = (server) => {
   const commentController = require("../controller/commentController");
 
   server
-    .route("/posts/:postId/comments")
+    .route("/posts/:post_id/comments")
     .get(commentController.listAllComments)
     .post(commentController.createAComment);
 
@@ -11,4 +11,8 @@ module.exports = (server) => {
     .get(commentController.readAComment)
     .put(commentController.updateAComment)
     .delete(commentController.deleteAComment);
+
+  server
+    .route("/comments")
+    .get(commentController.listEveryComments);
 };

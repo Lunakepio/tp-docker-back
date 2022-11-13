@@ -2,13 +2,25 @@ const Post = require("../models/postModel");
 const Comment = require("../models/commentModel");
 
 exports.listAllComments = (req, res) => {
-  Comment.find({ postId : req.params.postId }, (err, posts) => {
+  Comment.find({ post_id : req.params.post_id }, (err, posts) => {
     if (err) {
       res.status(500).send(err);
     }
+    console.log(req)
     res.status(200).json(posts);
   });
 }
+
+exports.listEveryComments = (req, res) => {
+  Comment.find({}, (err, posts) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    console.log(req)
+    res.status(200).json(posts);
+  });
+}
+
 
 exports.createAComment = (req, res) => {
   let newComment = new Comment(req.body);

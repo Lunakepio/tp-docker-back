@@ -1,24 +1,27 @@
 import * as React from "react";
 import "./assets/style/settings.scss";
 import axios from "axios";
+import logo from "./assets/img/logo.png";
+import memoji from "./assets/img/memoji.png";
 import { Context } from "./App";
 import { useNavigate } from "react-router-dom";
+import Profile from "./Profile";
 
 function Home() {
   const values = React.useContext(Context);
   const [text, setText] = React.useState("");
   const [post, setPost] = React.useState([]);
+  const [showProfileActions, setShowProfileActions] = React.useState(false);
   const navigate = useNavigate();
-  if (values.isLogin === false) {
-    window.location.href = "/";
-  }
 
+  console.log(values);
   const createABlog = (e) => {
     setText("");
 
     e.preventDefault();
     axios
       .post("http://localhost:3000/posts", {
+        userId: values.userId,
         userName: values.userName,
         content: text,
       })
@@ -33,6 +36,14 @@ function Home() {
     if (e.key === "Enter" && text !== "") {
       createABlog();
     }
+  };
+
+  const logout = () => {
+    values.setIsLogin(false);
+    values.setUserName("");
+    values.setUserEmail("");
+    values.setUserId("");
+    navigate("/");
   };
 
   React.useEffect(() => {
@@ -79,6 +90,7 @@ function Home() {
           <p>
             <span>{props.item.userName}</span>
           </p>
+          <br></br>
           {!isEdit ? (
             <p>{props.item.content}</p>
           ) : (
@@ -93,7 +105,7 @@ function Home() {
           {isEdit ? (
             <span
               className="save"
-              onClick={() => saveEdit(e, props.item._id, blogText)}
+              onClick={(e) => saveEdit(e, props.item._id, blogText)}
             >
               ✅
             </span>
@@ -109,16 +121,21 @@ function Home() {
             💬
           </span>
           &nbsp;
-          <span className="edit" onClick={(e) => setIsEdit(true)}>
-            📝
-          </span>
-          &nbsp;
-          <span
-            className="delete"
-            onClick={(e) => deletePost(e, props.item._id)}
-          >
-            🗑️
-          </span>
+          {values.userId === props.item.userId ? (
+            <>
+              <span className="edit" onClick={(e) => setIsEdit(true)}>
+                📝
+              </span>
+              <span
+                className="delete"
+                onClick={(e) => deletePost(e, props.item._id)}
+              >
+                🗑️
+              </span>
+            </>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     );
@@ -127,11 +144,8 @@ function Home() {
   return (
     <div className="home">
       <div className="col left">
-        <div className="name">
-          <p>{values.userName}</p>
-          <p>
-            <span>{values.userEmail}</span>
-          </p>
+        <div className="logo">
+          <img src={logo} alt="logo" />
         </div>
       </div>
       <div className="col middle">
@@ -159,7 +173,9 @@ function Home() {
           })}
         </div>
       </div>
-      <div className="col right">x</div>
+      <div className="col right">
+       <Profile />
+      </div>
     </div>
   );
 }
