@@ -57,34 +57,6 @@ function Home() {
       });
   }, []);
 
-  const saveEdit = (e, id, blogText) => {
-    e.preventDefault();
-    axios
-      .put(`http://localhost:3000/posts/${id}`, {
-        content: blogText,
-      })
-      .then((res) => {
-        console.log(res);
-        setPost(post.map((item) => (item._id === id ? res.data : item)));
-      });
-  };
-
-  const deletePost = (e, id) => {
-    axios
-      .delete(`http://localhost:3000/posts/${id}`)
-      .then((res) => {
-        console.log(res);
-        setPost(post.filter((item) => item._id !== id));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const reporting = (e, id) => {
-    console.log("test");
-  };
-
   function Blog(props) {
     const [blogText, setBlogText] = React.useState(props.item.content);
     const [isEdit, setIsEdit] = React.useState(false);
@@ -101,6 +73,34 @@ function Home() {
           }
         });
       });
+    };
+
+    const saveEdit = (e, id, blogText) => {
+      e.preventDefault();
+      axios
+        .put(`http://localhost:3000/posts/${id}`, {
+          content: blogText,
+        })
+        .then((res) => {
+          console.log(res);
+          setPost(post.map((item) => (item._id === id ? res.data : item)));
+        });
+    };
+  
+    const deletePost = (e, id) => {
+      axios
+        .delete(`http://localhost:3000/posts/${id}`)
+        .then((res) => {
+          console.log(res);
+          setPost(post.filter((item) => item._id !== id));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+  
+    const reporting = (e, id) => {
+      console.log("test");
     };
 
     React.useEffect(() => {
@@ -153,11 +153,16 @@ function Home() {
               </div>
             ) : (
               <div className="actions">
+              <div className="row cancel">
+                      <span onClick={() => setShowPostActions(false)}>
+                        􀆄&nbsp;&nbsp;Close this menu
+                      </span>
+                    </div>
                 {values.userId == props.item.userId ? (
                   <>
                     {" "}
                     <div className="row edit">
-                      <span onClick={() => setIsEdit(true)}>
+                      <span onClick={() => setIsEdit(!isEdit)}>
                         􀈎&nbsp;&nbsp;Edit your post
                       </span>
                     </div>
@@ -166,6 +171,13 @@ function Home() {
                         􀈑&nbsp;&nbsp;Delete your post
                       </span>
                     </div>
+                    {isEdit ? (
+                      <div className="row save">
+                        <span onClick={(e) => saveEdit(e, props.item._id, blogText)}>
+                          􀈄&nbsp;&nbsp;Save edits
+                        </span>
+                      </div>
+                    ) : null}
                   </>
                 ) : (
                   ""
@@ -189,16 +201,6 @@ function Home() {
             />
           )}
           <div className="postActions">
-            {isEdit ? (
-              <span
-                className="symbol save"
-                onClick={(e) => saveEdit(e, props.item._id, blogText)}
-              >
-                ✔ &nbsp;
-              </span>
-            ) : (
-              ""
-            )}
             <span
               className="symbol comment"
               onClick={() => navigate(`/post/${props.item._id}`)}
@@ -206,12 +208,6 @@ function Home() {
               􀌤 &nbsp; {props.item.comments} &nbsp;&nbsp;
             </span>
             &nbsp;
-            {/* <span
-              className="symbol like"
-              onClick={(e) => likeAPost(e, values.userId, props.item._id)}
-            >
-              {like ? "􀊵" : "􀊴"} &nbsp; {props.item.likes}
-            </span> */}
             {!like ? (
               <span
                 className="symbol like"
