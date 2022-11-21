@@ -4,8 +4,9 @@ import axios from "axios";
 import logo from "./assets/img/logo.png";
 import memoji from "./assets/img/memoji.png";
 import { Context } from "./App";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Profile from "./Profile";
+import Nav from "./Nav";
 
 function Home() {
   const values = React.useContext(Context);
@@ -13,8 +14,8 @@ function Home() {
   const [post, setPost] = React.useState([]);
   const [showProfileActions, setShowProfileActions] = React.useState(false);
   const navigate = useNavigate();
-
   console.log(values);
+  const location = useLocation();
   const createABlog = (e) => {
     setText("");
 
@@ -249,6 +250,7 @@ function Home() {
   return (
     <div className="home">
       <div className="col left">
+      <Nav/>
         <div className="logo">
           <img src={logo} alt="logo" />
         </div>

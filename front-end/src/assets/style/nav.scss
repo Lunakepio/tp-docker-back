@@ -1,0 +1,37 @@
+nav{
+  margin-top: 200px;
+  ul{
+    display:flex;
+    flex-direction: column;
+    list-style: none;
+    li{
+      margin-bottom: 15px;
+      height:35px;
+      width:150px;
+      text-align:center;
+      display:grid;
+      place-content: center;
+      border-radius: 8px;
+      transition: all 0.2s ease 0s;
+      &:hover{
+        background: rgba(255,255,255,0.1);
+      }
+      &:active{
+        background: rgba(255,255,255,0.2);
+      }
+      a{
+        all:unset;
+        cursor:pointer;
+
+        font-size: 18px;
+
+        color:white;
+        font-weight:500;
+        
+      }
+      a.active{
+        font-weight: 600;
+      }
+    }
+  }
+}
