@@ -203,7 +203,7 @@ function Home() {
               className="symbol comment"
               onClick={() => navigate(`/post/${props.item._id}`)}
             >
-              􀌤
+              􀌤 &nbsp; {props.item.comments} &nbsp;&nbsp;
             </span>
             &nbsp;
             {/* <span
