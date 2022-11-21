@@ -1,4 +1,4 @@
-# Blog.js
+# Blog.js V1.1 
 ## _The best Blog local service._
 
 Blog.js is a local working blog where you can create users, write posts or comments under posts
