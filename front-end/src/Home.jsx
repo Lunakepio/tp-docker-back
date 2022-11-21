@@ -81,15 +81,103 @@ function Home() {
       });
   };
 
+  const reporting = (e, id) => {
+    console.log("test");
+  };
+
   function Blog(props) {
     const [blogText, setBlogText] = React.useState(props.item.content);
     const [isEdit, setIsEdit] = React.useState(false);
+    const [showPostActions, setShowPostActions] = React.useState(false);
+    const [like, setLike] = React.useState(false);
+    const [likeCount, setLikeCount] = React.useState(props.item.likes);
+
+    const getAllLikes = () => {
+      axios.get(`http://localhost:3000/likes/${props.item._id}`).then((res) => {
+        console.log(res);
+        res.data.map((item) => {
+          if (item.userId === values.userId) {
+            setLike(true);
+          }
+        });
+      });
+    };
+
+    React.useEffect(() => {
+      getAllLikes();
+    }, []);
+
+    const likeAPost = (e, userId, postId) => {
+      e.preventDefault();
+      setLike(!like);
+      axios
+        .post(`http://localhost:3000/likes/${postId}`, {
+          userId: userId,
+          postId: postId,
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    };
+
+    const unlikeAPost = (e, userId, postId) => {
+      e.preventDefault();
+      setLike(!like);
+      axios
+        .delete(`http://localhost:3000/likes/${postId}`, {
+          data: {
+            userId: userId,
+            postId: postId,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+        });
+      console.log(e);
+    };
+
     return (
       <div className="blog">
-        <div className="left">
-          <p>
-            <span>{props.item.userName}</span>
-          </p>
+        <div className="content">
+          <div className="row">
+            <p>
+              <span>{props.item.userName}</span>
+            </p>
+
+            {!showPostActions ? (
+              <div
+                className="moreActions"
+                onClick={() => setShowPostActions(!showPostActions)}
+              >
+                ‧‧‧
+              </div>
+            ) : (
+              <div className="actions">
+                {values.userId == props.item.userId ? (
+                  <>
+                    {" "}
+                    <div className="row edit">
+                      <span onClick={() => setIsEdit(true)}>
+                        􀈎&nbsp;&nbsp;Edit your post
+                      </span>
+                    </div>
+                    <div className="row delete">
+                      <span onClick={(e) => deletePost(e, props.item._id)}>
+                        􀈑&nbsp;&nbsp;Delete your post
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
+                <div className="row report">
+                  <span onClick={(e) => reporting(e, props.item._id)}>
+                    􀋉&nbsp;&nbsp;Report this post
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
           <br></br>
           {!isEdit ? (
             <p>{props.item.content}</p>
@@ -100,42 +188,63 @@ function Home() {
               autoFocus={true}
             />
           )}
-        </div>
-        <div className="right">
-          {isEdit ? (
-            <span
-              className="save"
-              onClick={(e) => saveEdit(e, props.item._id, blogText)}
-            >
-              ✅
-            </span>
-          ) : (
-            ""
-          )}
-          &nbsp;
-          <span
-            className="comment"
-            onClick={() => navigate(`/post/${props.item._id}`)}
-            key={props.item._id}
-          >
-            💬
-          </span>
-          &nbsp;
-          {values.userId === props.item.userId ? (
-            <>
-              <span className="edit" onClick={(e) => setIsEdit(true)}>
-                📝
-              </span>
+          <div className="postActions">
+            {isEdit ? (
               <span
-                className="delete"
+                className="symbol save"
+                onClick={(e) => saveEdit(e, props.item._id, blogText)}
+              >
+                ✔ &nbsp;
+              </span>
+            ) : (
+              ""
+            )}
+            <span
+              className="symbol comment"
+              onClick={() => navigate(`/post/${props.item._id}`)}
+            >
+              􀌤
+            </span>
+            &nbsp;
+            {/* <span
+              className="symbol like"
+              onClick={(e) => likeAPost(e, values.userId, props.item._id)}
+            >
+              {like ? "􀊵" : "􀊴"} &nbsp; {props.item.likes}
+            </span> */}
+            {!like ? (
+              <span
+                className="symbol like"
+                onClick={(e) => {likeAPost(e, values.userId, props.item._id); setLikeCount(likeCount + 1)}}
+              >
+                􀊴 &nbsp; {likeCount}
+              </span>
+            ) : (
+              <span
+                className="symbol like"
+                onClick={(e) => {unlikeAPost(e, values.userId, props.item._id); setLikeCount(likeCount - 1)}}
+              >
+                􀊵 &nbsp; {likeCount}
+              </span>
+            )}
+            &nbsp;
+            {/* {values.userId === props.item.userId ? (
+            <>
+              <span className="symbol edit" onClick={(e) => setIsEdit(true)}>
+                􀈎
+              </span>
+              &nbsp;
+              <span
+                className="symbol delete"
                 onClick={(e) => deletePost(e, props.item._id)}
               >
-                🗑️
+                􀈑
               </span>
             </>
           ) : (
             ""
-          )}
+          )} */}
+          </div>
         </div>
       </div>
     );
@@ -174,7 +283,7 @@ function Home() {
         </div>
       </div>
       <div className="col right">
-       <Profile />
+        <Profile />
       </div>
     </div>
   );

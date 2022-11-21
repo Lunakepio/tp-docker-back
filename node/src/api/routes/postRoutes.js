@@ -10,5 +10,5 @@ module.exports = (server) => {
     .route("/posts/:postId")
     .get(postController.readAPost)
     .put(postController.updateAPost)
-    .delete(postController.deleteAPost);
+    .delete(postController.deleteAPost)
 };

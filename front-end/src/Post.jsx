@@ -124,7 +124,7 @@ function Post() {
             onClick={() => navigate(`/post/${props.item._id}`)}
             key={props.item._id}
           >
-            💬
+            💬􀌤
           </span>
           {props.item.userId === values.userId ? (
             <>

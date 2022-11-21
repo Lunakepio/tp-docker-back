@@ -18,6 +18,8 @@ const userRoutes = require("./api/routes/userRoutes");
 userRoutes(server);
 const commentRoutes = require("./api/routes/commentRoutes");
 commentRoutes(server);
+const likesRoutes = require("./api/routes/likesRoutes");
+likesRoutes(server);
 
 server.listen(port, hostname);
 

@@ -168,11 +168,18 @@
       color: white;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
-      justify-content: space-between;
       text-align: left;
-      align-items: center;
-      .left {
+      justify-content: space-between;
+      min-height:130px;
+      .row{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width:100%;
+      }
+      .content{
         all: unset;
+        width:100%;
         input {
           all: unset;
           font-size: 14px;
@@ -267,5 +274,110 @@
     color:rgba(255, 255, 255, 1);
     border-bottom: 1px solid white;
 
+  }
+}
+
+.symbol{
+  opacity: 0.7;
+  transition: all 0.15s ease 0s;
+  cursor: pointer;
+}
+
+.like{
+  &:hover{
+    opacity: 1;
+    filter: invert(51%) sepia(10%) saturate(3886%) hue-rotate(298deg) brightness(102%) contrast(98%);
+  }
+}
+
+.comment{
+  &:hover{
+    opacity: 1;
+    filter: invert(56%) sepia(11%) saturate(7470%) hue-rotate(201deg) brightness(105%) contrast(98%);
+  }
+}
+
+.delete{
+  &:hover{
+    opacity: 1;
+    color : #fd5b86;
+  }
+}
+
+.save{
+  display:grid;
+  place-content: center;
+  width: 30px;
+  height: 30px;
+  background: #7efca2;
+  opacity: 0.7;
+  &:hover{
+    opacity: 1;
+  }
+}
+
+.edit{
+  &:hover{
+    opacity: 1;
+  }
+}
+
+.postActions{
+  margin-top: 20px;
+}
+
+.moreActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  transition: all 0.3s ease 0s;
+  position:absolute;
+  left:63%;
+  cursor: pointer;
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  &:active {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.blog{
+  .actions{
+    width:170px;
+    height:70px;
+    display:flex;
+    flex-direction: column;
+    color:white;
+    position:absolute;
+    left:calc(66% - 170px);
+    margin-top: 50px;
+    .row{ 
+      cursor:pointer;
+      height:50%;
+      display:flex;
+      align-items: center;
+      padding:8px;
+      transition: all 0.2s ease 0s;
+      background:rgba(255, 255, 255, 0.1);
+
+      &:first-child{
+        border-radius: 5px 5px 0 0;
+      }
+      &:last-child{
+        border-radius: 0 0 5px 5px;
+      }
+      &:hover{
+        background:rgba(255, 255, 255, 0.2);
+      }
+      &:not(:last-child){
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+  
+    }
   }
 }
