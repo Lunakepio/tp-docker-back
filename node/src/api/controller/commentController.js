@@ -82,9 +82,10 @@ exports.deleteAComment = (req, res) => {
         if (err) {
           res;
         }
+        else {
+          res.status(200).json({ message: "Commentaire supprimé." });
+        }
       }
     );
-
-    res.status(200).json({ message: "Comment successfully deleted" });
   });
 };

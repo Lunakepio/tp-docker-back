@@ -4,6 +4,8 @@ import axios from "axios";
 import { Context } from "./App";
 import { useParams } from "react-router-dom";
 import Profile from "./Profile";
+import Nav from "./Nav";
+import logo from "./assets/img/logo.png";
 
 function Post() {
   const values = React.useContext(Context);
@@ -13,6 +15,7 @@ function Post() {
 
   const [comments, setComments] = React.useState([]);
   const { id } = useParams();
+  
 
   React.useEffect(() => {
     axios.get(`http://localhost:3000/posts/${id}`).then((res) => {
@@ -42,17 +45,6 @@ function Post() {
     }
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter" && comment !== "") {
-      createAComment();
-    }
-  };
-
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && comment !== "") {
-      createAComment();
-    }
-  });
 
   React.useEffect(() => {
     axios
@@ -65,37 +57,121 @@ function Post() {
       });
   }, []);
 
-  const saveEdit = (e, id, commentText) => {
-    e.preventDefault();
-    axios
-      .put(`http://localhost:3000/comments:${id}`, {
-        content: commentText,
-      })
-      .then((res) => {
-        console.log(res);
-        setComments(
-          comments.map((item) => (item._id === id ? res.data : item))
-        );
-      });
-  };
-
-  const deleteComment = (e, id) => {
-    e.preventDefault();
-    axios.delete(`http://localhost:3000/comments/${id}`).then((res) => {
-      console.log(res);
-      setComments(comments.filter((item) => item._id !== id));
-    });
-  };
-
   function Comments(props) {
     const [blogText, setBlogText] = React.useState(props.item.content);
     const [isEdit, setIsEdit] = React.useState(false);
+    const [showPostActions, setShowPostActions] = React.useState(false);
+    const [like, setLike] = React.useState(false);
+    const [likeCount, setLikeCount] = React.useState(props.item.likes);
+
+    const deleteComment = (e, id) => {
+      e.preventDefault();
+      axios
+        .delete(`http://localhost:3000/comments/${id}`)
+        .then((res) => {
+          console.log(res);
+          setComments(comments.filter((item) => item._gid !== id));
+        });
+    }
+
+    const getAllLikes = () => {
+      axios.get(`http://localhost:3000/likes/comments/${props.item._id}`).then((res) => {
+        console.log(res);
+        res.data.map((item) => {
+          if (item.userId === values.userId) {
+            setLike(true);
+          }
+        });
+      });
+    };
+
+    React.useEffect(() => {
+      getAllLikes();
+    }, []);
+
+    const likeAComment = (e, id) => {
+      e.preventDefault();
+      axios
+        .post(`http://localhost:3000/likes/comments/${id}`, {
+          userId: values.userId,
+          commentId: id
+        })
+        .then((res) => {
+          console.log(res);
+          setLike(true);
+        });
+    };
+
+    const unlikeAComment = (e, id) => {
+      console.log(id);
+      e.preventDefault();
+      axios
+        .delete(`http://localhost:3000/likes/comments/${id}`, {
+          data: {
+            userId: values.userId,
+            commentId: id
+          }
+        })
+        .then((res) => {
+          console.log(res);
+          setLike(false);
+        });
+    };
+
     return (
       <div className="blog">
-        <div className="left">
-          <p>
-            <span>{props.item.userName}</span>
-          </p>
+        <div className="content">
+          <div className="row">
+            <p>
+              <span>{props.item.userName}</span>
+            </p>
+
+            {!showPostActions ? (
+              <div
+                className="moreActions"
+                onClick={() => setShowPostActions(!showPostActions)}
+              >
+                ‧‧‧
+              </div>
+            ) : (
+              <div className="actions">
+              <div className="row cancel">
+                      <span onClick={() => setShowPostActions(!showPostActions)}>
+                        􀆄&nbsp;&nbsp;Close this menu
+                      </span>
+                    </div>
+                {values.userId == props.item.userId ? (
+                  <>
+                    {" "}
+                    <div className="row edit">
+                      <span onClick={() => setIsEdit(!isEdit)}>
+                        􀈎&nbsp;&nbsp;Edit your post
+                      </span>
+                    </div>
+                    <div className="row delete">
+                      <span onClick={(e) => deleteComment(e, props.item._id)}>
+                        􀈑&nbsp;&nbsp;Delete your comment
+                      </span>
+                    </div>
+                    {isEdit ? (
+                      <div className="row save">
+                        <span onClick={(e) => saveEdit(e, props.item._id, blogText)}>
+                          􀈄&nbsp;&nbsp;Save edits
+                        </span>
+                      </div>
+                    ) : null}
+                  </>
+                ) : (
+                  ""
+                )}
+                <div className="row report">
+                  <span onClick={(e) => reporting(e, props.item._id)}>
+                    􀋉&nbsp;&nbsp;Report this post
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
           <br></br>
           {!isEdit ? (
             <p>{props.item.content}</p>
@@ -106,43 +182,23 @@ function Post() {
               autoFocus={true}
             />
           )}
-        </div>
-        <div className="right">
-          {isEdit ? (
-            <span
-              className="save"
-              onClick={() => saveEdit(e, props.item._id, blogText)}
-            >
-              ✅
-            </span>
-          ) : (
-            ""
-          )}
-          &nbsp;
-          <span
-            className="comment"
-            onClick={() => navigate(`/post/${props.item._id}`)}
-            key={props.item._id}
-          >
-            💬􀌤
-          </span>
-          {props.item.userId === values.userId ? (
-            <>
-              &nbsp;
-              <span className="edit" onClick={(e) => setIsEdit(true)}>
-                📝
-              </span>
-              &nbsp;
+          <div className="postActions">
+            {!like ? (
               <span
-                className="delete"
-                onClick={(e) => deleteComment(e, props.item._id)}
+                className="symbol like"
+                onClick={(e) => {likeAComment(e, props.item._id); setLikeCount(likeCount + 1)}}
               >
-                🗑️
+                􀊴 &nbsp; {likeCount}
               </span>
-            </>
-          ) : (
-            ""
-          )}
+            ) : (
+              <span
+                className="symbol like"
+                onClick={(e) => {unlikeAComment(e, props.item._id); setLikeCount(likeCount - 1)}}
+              >
+                􀊵 &nbsp; {likeCount}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -151,11 +207,9 @@ function Post() {
   return (
     <div className="home">
       <div className="col left">
-        <div className="name">
-          <p>{values.userName}</p>
-          <p>
-            <span>{values.userEmail}</span>
-          </p>
+      <Nav/>
+        <div className="logo">
+          <img src={logo} alt="logo" />
         </div>
       </div>
       <div className="col middle">

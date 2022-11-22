@@ -6,4 +6,11 @@ module.exports = (server) => {
     .post(likesController.likeAPost)
     .delete(likesController.unlikeAPost)
     .get(likesController.listAllLikes);
+  
+    server
+      .route("/likes/comments/:commentId")
+      .post(likesController.likeAComment)
+      .delete(likesController.unlikeAComment)
+      .get(likesController.listAllLikesComments);
+    
 };

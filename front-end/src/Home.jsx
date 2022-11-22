@@ -155,7 +155,7 @@ function Home() {
             ) : (
               <div className="actions">
               <div className="row cancel">
-                      <span onClick={() => setShowPostActions(false)}>
+                      <span onClick={() => setShowPostActions(!showPostActions)}>
                         􀆄&nbsp;&nbsp;Close this menu
                       </span>
                     </div>

@@ -6,6 +6,7 @@ let commentSchema = new Schema({
   userName: { type: String, required: true },
   content: { type: String, required: "le contenu est requis" },
   createdAt: { type: Date, default: Date.now },
+  likes:{type: Number, default: 0},
   post_id: { type: String },
 });
 
