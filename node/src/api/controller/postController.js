@@ -1,4 +1,6 @@
 const Post = require("../models/postModel");
+const Comment = require("../models/commentModel");
+const Likes = require("../models/likeModel");
 
 exports.listAllPosts = (req, res) => {
   Post.find({}, (err, posts) => {
@@ -54,5 +56,16 @@ exports.deleteAPost = (req, res) => {
       res.status(500).send(err);
     }
     res.status(200).json({ message: "Post successfully deleted" });
+    Comment.deleteMany({ post_id: req.params.postId }, (err, comment) => {
+      if (err) {
+        res.status
+      }
+    });
+    Likes.deleteMany({ postId: req.params.postId }, (err, like) => {
+      if (err) {
+        res.status
+      }
+    });
+
   });
 }

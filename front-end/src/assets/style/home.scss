@@ -373,3 +373,17 @@
     }
   }
 }
+
+.previous{
+  width:33%;
+  display:flex;
+  justify-content: flex-end;
+  padding-right:22px;
+  a{
+    all:unset;
+    color: white;
+    font-size:22px;
+    cursor:pointer;
+  }
+  position:absolute;
+}

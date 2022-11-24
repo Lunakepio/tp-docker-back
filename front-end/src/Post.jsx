@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import Profile from "./Profile";
 import Nav from "./Nav";
 import logo from "./assets/img/logo.png";
+import { Link } from "react-router-dom";
 
 function Post() {
   const values = React.useContext(Context);
@@ -207,6 +208,11 @@ function Post() {
   return (
     <div className="home">
       <div className="col left">
+      <div className="previous">
+          <Link to="/home">
+            <span>􀄪</span>
+          </Link>
+      </div>
       <Nav/>
         <div className="logo">
           <img src={logo} alt="logo" />

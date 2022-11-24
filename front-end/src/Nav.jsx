@@ -6,7 +6,7 @@ function Nav() {
   return (
     <nav>
       <ul>
-        {location.pathname == "/Home" ? (
+        {location.pathname == "/Home" || location.pathname == "/home" ? (
           <li>
             <Link className="active" to="/Home">
               􀎟&nbsp;&nbsp;Home
@@ -17,15 +17,15 @@ function Nav() {
             <Link to="/Home">􀎞&nbsp;&nbsp;Home</Link>
           </li>
         )}
-        {location.pathname == "/admin" ? (
+        {location.pathname == "/admin" || location.pathname == "/Admin" ? (
           <li>
-            <Link className="active" to="/admin">􀐜 &nbsp;&nbsp;Admin</Link>
+            <Link className="active" to="/admin">
+            􀐝 &nbsp;&nbsp;Admin
+            </Link>
           </li>
         ) : (
           <li>
-            <Link to="/admin">
-              􀐜 &nbsp;&nbsp;Admin
-            </Link>
+            <Link to="/admin">􀐜 &nbsp;&nbsp;Admin</Link>
           </li>
         )}
       </ul>
