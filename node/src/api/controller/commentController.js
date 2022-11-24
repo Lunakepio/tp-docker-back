@@ -1,5 +1,6 @@
 const Post = require("../models/postModel");
 const Comment = require("../models/commentModel");
+const Likes = require("../models/likesModel");
 
 exports.listAllComments = (req, res) => {
   Comment.find({ post_id: req.params.post_id }, (err, posts) => {
@@ -70,7 +71,7 @@ exports.updateAComment = (req, res) => {
 };
 
 exports.deleteAComment = (req, res) => {
-  Comment.remove({ _id: req.params.commentId }, (err, comment) => {
+  Comment.deleteOne({ _id: req.params.commentId }, (err, comment) => {
     if (err) {
       res.status(500).send(err);
     }
@@ -87,5 +88,13 @@ exports.deleteAComment = (req, res) => {
         }
       }
     );
+    Likes.deleteMany({commentId: req.params.commentId}, (err, likes) => {
+      if (err) {
+        res.status
+      }
+      else{
+        res.status(200).json({message: "Commentaire supprimé."});
+      }
+    });
   });
 };

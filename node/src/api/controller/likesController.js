@@ -78,7 +78,7 @@ exports.unlikeAComment = (req, res) => {
 };
 
 exports.unlikeAPost = (req, res) => {
-  Likes.remove({ postId: req.params.postId, userId: req.body.userId}, (err, like) => {
+  Likes.deleteOne({ postId: req.params.postId, userId: req.body.userId}, (err, like) => {
     if (err) {
       res.status
     }

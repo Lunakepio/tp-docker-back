@@ -71,7 +71,7 @@ function Post() {
         .delete(`http://localhost:3000/comments/${id}`)
         .then((res) => {
           console.log(res);
-          setComments(comments.filter((item) => item._gid !== id));
+          setComments(comments.filter((item) => item._id !== id));
         });
     }
 

@@ -1,6 +1,6 @@
 const Post = require("../models/postModel");
 const Comment = require("../models/commentModel");
-const Likes = require("../models/likeModel");
+const Likes = require("../models/likesModel");
 
 exports.listAllPosts = (req, res) => {
   Post.find({}, (err, posts) => {
@@ -51,7 +51,7 @@ exports.updateAPost = (req, res) => {
 }
 
 exports.deleteAPost = (req, res) => {
-  Post.remove({ _id: req.params.postId }, (err, post) => {
+  Post.deleteOne({ _id: req.params.postId }, (err, post) => {
     if (err) {
       res.status(500).send(err);
     }

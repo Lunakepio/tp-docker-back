@@ -12,10 +12,11 @@ function Home() {
   const values = React.useContext(Context);
   const [text, setText] = React.useState("");
   const [post, setPost] = React.useState([]);
+  const [filteredPost, setFilteredPost] = React.useState([]);
   const [showProfileActions, setShowProfileActions] = React.useState(false);
   const navigate = useNavigate();
-  console.log(values);
   const location = useLocation();
+
   const createABlog = (e) => {
     setText("");
 
@@ -27,9 +28,7 @@ function Home() {
         content: text,
       })
       .then((res) => {
-        console.log(res);
-        setPost([...post, res.data]);
-        console.log(post);
+        setPost([res.data, ...filteredPost]);
       });
   };
 
@@ -51,13 +50,18 @@ function Home() {
     axios
       .get("http://localhost:3000/posts")
       .then((res) => {
-        setPost(res.data);
+        setPost(res.data);   
       })
       .catch((err) => {
-        console.log(err);
       });
   }, []);
 
+  React.useEffect(() => {
+    //order post by date desc
+    if(post.length > 0){
+      setFilteredPost(post.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+    }
+  }, [post]);
   function Blog(props) {
     const [blogText, setBlogText] = React.useState(props.item.content);
     const [isEdit, setIsEdit] = React.useState(false);
@@ -67,7 +71,6 @@ function Home() {
 
     const getAllLikes = () => {
       axios.get(`http://localhost:3000/likes/${props.item._id}`).then((res) => {
-        console.log(res);
         res.data.map((item) => {
           if (item.userId === values.userId) {
             setLike(true);
@@ -83,7 +86,6 @@ function Home() {
           content: blogText,
         })
         .then((res) => {
-          console.log(res);
           setPost(post.map((item) => (item._id === id ? res.data : item)));
         });
     };
@@ -92,11 +94,9 @@ function Home() {
       axios
         .delete(`http://localhost:3000/posts/${id}`)
         .then((res) => {
-          console.log(res);
           setPost(post.filter((item) => item._id !== id));
         })
         .catch((err) => {
-          console.log(err);
         });
     };
   
@@ -261,17 +261,18 @@ function Home() {
             type="text"
             placeholder="What are your thoughts ?"
             onChange={(e) => setText(e.target.value)}
+            value={text}
           />
           <button
             type="submit"
-            onClick={(e) => createABlog(e)}
+            onClick={(e) => {createABlog(e), setText("")}}
             onKeyDown={(e) => handleKeyPress(e)}
           >
             Blog it !
           </button>
         </div>
         <div className="blogSection">
-          {post.map((item) => {
+          {filteredPost.map((item) => {
             return (
               <div className="" key={item._id}>
                 <Blog item={item} />
