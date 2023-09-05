@@ -6,7 +6,7 @@ const hostname = "0.0.0.0";
 const port = 3000;
 
 const server = express();
-mongoose.connect("mongodb://localhost:27017/apinode");
+mongoose.connect("mongodb://mongo/apinode");
 
 server.use(cors());
 server.use(express.urlencoded());
