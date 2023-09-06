@@ -41,19 +41,21 @@ Install the dependencies and devDependencies and start the server.
 to launch the front-end :
 ```sh
 cd front-end
-npm i
-npm run dev
+docker compose up --build
 ```
 to launch the back-end
 
 ```sh
 cd node/src/
-npm i
-npm run start
+docker compose up --build
 ```
 
 ⚠️ You need the front-end and back-end to run simultaneously for the application to work ⚠️
 
+## Start the app
+
+To start the app you must create on account on the register page, create a pseudo, email, and password.
+Log in with your credentials and start blogging
 
 
 
